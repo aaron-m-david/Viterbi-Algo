@@ -1,0 +1,21 @@
+#!/bin/bash
+
+num_tests=$(ls tests | wc -l)
+files=$(ls ./tests)
+mkdir -p my_results
+count=1
+for f in $files
+do
+	touch my_results/t$count.myout
+	./a.out < tests/$f > my_results/t$count.myout
+	count=$(( $count + 1 ))
+done
+files=$(ls ./expected_results)
+mkdir -p diff
+count=1
+for f in $files
+do
+	touch diff/t$count.diff
+	diff my_results/t$count.myout expected_results/t$count.out > diff/t$count.diff
+	count=$(( $count + 1 ))
+done
